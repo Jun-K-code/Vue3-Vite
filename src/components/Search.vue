@@ -27,8 +27,7 @@
 
 <script setup>
 import { ref } from 'vue';
-// import { mapState } from 'vuex';
-import { useState } from 'vuex';
+import { mapState } from 'vuex';
 import { search, url } from '../data/fetchData.js';
 const searchVal = ref('');
 const results = ref('');

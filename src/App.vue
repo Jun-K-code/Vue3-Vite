@@ -1,6 +1,6 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue';
-import { useRoute } from 'vue-router'
+import { ref, watch, onMounted, watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
 
 import HelloWorld from './components/HelloWorld.vue';
 import vfooter from './components/common/vfooter.vue';
@@ -11,13 +11,23 @@ const isReady = ref(false);
 const route = useRoute();
 
 onMounted(() => {
-  console.log("测试111", route)
+    console.log('测试111', route.value);
     if (route.value.name === 'video') {
         isShow.value = false;
     }
     setTimeout(() => {
         isReady.value = true;
     }, 0);
+});
+
+watchEffect(() => {
+    // 使用 watchEffect 监听路由变化
+    console.log('测试222', route.value);
+    if (route.value && route.value.name === 'video') {
+        isShow.value = false;
+    } else {
+        isShow.value = true;
+    }
 });
 
 watch(route, (to, from) => {
@@ -38,7 +48,7 @@ watch(route, (to, from) => {
     <!-- <HelloWorld msg="Vite + Vue" /> -->
     <div id="video">
         <transition :name="transitionName">
-            <keep-alive :include="['home']">
+            <keep-alive :include="['Home']">
                 <router-view class="child-view" :class="[isReady ? 'transition' : '']">
                 </router-view>
             </keep-alive>
