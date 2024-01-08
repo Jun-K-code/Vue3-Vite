@@ -2,7 +2,6 @@
 import { ref, watch, onMounted, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 
-import HelloWorld from './components/HelloWorld.vue';
 import vfooter from './components/common/vfooter.vue';
 
 const transitionName = ref('slide-left');
@@ -45,7 +44,6 @@ watch(route, (to, from) => {
 </script>
 
 <template>
-    <!-- <HelloWorld msg="Vite + Vue" /> -->
     <div id="video">
         <transition :name="transitionName">
             <keep-alive :include="['Home']">
