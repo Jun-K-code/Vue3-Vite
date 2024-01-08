@@ -13,21 +13,34 @@
                 />
             </header>
             <section class="main">
-                <input id="toggle-all" class="toggle-all" type="checkbox" />
+                <input
+                    id="toggle-all"
+                    class="toggle-all"
+                    type="checkbox"
+                    :checked="allDoneRef"
+                    @input="($event) => setAllChecked($event.target.checked)"
+                />
                 <label for="toggle-all">Mark all as complete</label>
                 <ul class="todo-list">
                     <li
                         class="todo"
-                        :class="{ completed: todo.completed }"
+                        :class="{ completed: todo.completed, editing: todo === editingTodoRef }"
                         v-for="(todo, index) in filteredTodosRef"
                         :key="todo.id"
                     >
                         <div class="view">
                             <input class="toggle" type="checkbox" v-model="todo.completed" />
-                            <label>{{ todo.title }}</label>
+                            <label @dblclick="editTodo(todo)">{{ todo.title }}</label>
                             <button class="destroy"></button>
                         </div>
-                        <input class="edit" type="text" />
+                        <input
+                            class="edit"
+                            type="text"
+                            v-model="todo.title"
+                            @blur="doneEdit"
+                            @keyup.enter="doneEdit"
+                            @keyup.escape="cancelEdit(todo)"
+                        />
                     </li>
                 </ul>
             </section>
@@ -59,8 +72,11 @@
 import { useTodoList } from '../src/composition/useTodoList';
 import { useNewTodo } from '../src/composition/useNewTodo';
 import { useFilter } from '../src/composition/useFilter';
+import { useEditTodo } from '../src/composition/useEditTodo';
 
 const { todosRef } = useTodoList();
 const { newTodoRef, addTodo } = useNewTodo(todosRef);
 const { visibilityRef, filteredTodosRef, remainingRef, completedRef } = useFilter(todosRef);
+const { editingTodoRef, editTodo, doneEdit, cancelEdit, allDoneRef, setAllChecked } =
+    useEditTodo(todosRef);
 </script>
